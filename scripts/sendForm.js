@@ -26,15 +26,23 @@ form.addEventListener("submit", (e) => {
     const input = label.querySelector("input");
 
     dataForSend[span.textContent] = input.value;
+    if (input.value === "") {
+      alert(`Заполните поле "${span.textContent}"!`);
+      return;
+    }
   });
 
-  fetch("https://jsonplaceholder.typicode.com/posts", {
-    method: "POST",
-    body: JSON.stringify(dataForSend),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  }).then(() => alert("Отправлено"));
+  if (Object.values(dataForSend).every((value) => value !== "")) {
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: JSON.stringify(dataForSend),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then(() => alert("Отправлено"));
+  } else {
+    alert("Заполните все поля формы для отправки!");
+  }
 
   form.reset();
   modal.style.display = "none";
